@@ -15,15 +15,15 @@ _backgrounds_array_length=${#_backgrounds_array[@]} # should set it to 0 if it i
 # all background paths are saved into an array
 load_backgrounds() {
     for background in "$_path_to_backgrounds"/*; do
-        [[ -e "$background" ]] || continue
+        [[ -e "$background" ]] || continue  # breaks the 'loading' if the path is invalid
         _backgrounds_array+=("file://$background")
     done
     _backgrounds_array_length=${#_backgrounds_array[@]}
-    echo "Array length $_backgrounds_array_length"
+    # echo "Array length $_backgrounds_array_length"
 }
 
 # current background index is figured out
-list_backgrounds() {
+index_background() {
     echo "All backgrounds:"
     for i in ${!_backgrounds_array[@]}; do
         echo ${_backgrounds_array[$i]}
@@ -47,7 +47,7 @@ echo "Current background path: $_current_background"
 load_backgrounds
 
 if (( $_backgrounds_array_length >= 1 )); then
-    list_backgrounds
+    index_background
     change_background
 else
     echo "Error, Invalid path or designated folder is empty! Keeping the old background."
